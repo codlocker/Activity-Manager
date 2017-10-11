@@ -1,11 +1,11 @@
 {
 
-  "manifest_version": 2,
+  "manifest_version": 1,
   "name": "Activity Manager",
-  "version": "1.0",
+  "version": "1.0.1",
 
   "description": "Manages the websites you visit",
-  "homepage_url": "https://github.com/codlocker/CodeMate/",
+  "homepage_url": "https://github.com/codlocker/Activity-Manager",
   "icons": {
     "48": "icons/mate.png"
   },
