@@ -2,14 +2,19 @@
 
   "manifest_version": 2,
   "name": "Activity Manager",
-  "version": "1.0.1",
+  "version": "1.0.2.1",
 
   "description": "Manages the websites you visit",
   "homepage_url": "https://github.com/codlocker/Activity-Manager",
   "icons": {
     "48": "icons/mate.png"
   },
-
+  "applications": {
+    "gecko": {
+      "id": "{babadc56-a5c8-44f4-b75b-37381e8fcf83}",
+      "strict_min_version": "42.0"
+    }
+  },
   "permissions": [
     "history",
     "storage",
