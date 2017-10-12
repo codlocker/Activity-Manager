@@ -38,7 +38,6 @@ function restoreOptions() {
 
 function setData(result) {
     res = new Set(result.url);
-    let i;
     if (res.size === 0) {
         $("#allowed_urls").append("<p>No URLs Added yet!</p>");
     }
@@ -70,7 +69,7 @@ function createDivForLink(u) {
     $(button).addClass("button").addClass("alert");
     $(button).attr("data-value", u);
     $(button).text("DELETE");
-    $(button).on("click", function (event) {
+    $(button).on("click", function () {
         console.log("Deleting:" + u);
         res.delete(u);
         browser.storage.local.set(

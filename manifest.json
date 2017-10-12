@@ -2,7 +2,7 @@
 
   "manifest_version": 2,
   "name": "Activity Manager",
-  "version": "1.0.2.1",
+  "version": "1.0.2.2",
 
   "description": "Manages the websites you visit",
   "homepage_url": "https://github.com/codlocker/Activity-Manager",
