@@ -12,55 +12,68 @@ class UrlContent {
 }
 searchHistory.then((results) => {
     if (results.length < 1) {
-
+        list.html("<p class='panel callout'>No URLs found in History. " +
+            "Please Note the History is collected for the Last 24 Hours</p>");
     } else {
         for (let k in results) {
-            let history = results[k].url;
-            let split_url = history.split("/");
-            url = split_url[2].toString().trim();
+            if (results.hasOwnProperty(k)) {
+                let history = results[k].url;
+                let split_url = history.split("/");
+                url = split_url[2].toString().trim();
 
-            if (url in list_of_urls) {
-                list_of_urls[url].count_f += 1;
-            } else {
-                list_of_urls[url] = new UrlContent(history, url, 1);
+                if (url in list_of_urls) {
+                    list_of_urls[url].count_f += 1;
+                } else {
+                    list_of_urls[url] = new UrlContent(history, url, 1);
+                }
             }
         }
+        notifyuserRegardingUsage();
     }
-    notifyuserRegardingUsage();
 });
 
 function getMostViewedListOfURLs(list_of_urls) {
     for (let url_obj in list_of_urls) {
-        let name_split = list_of_urls[url_obj].url.split("/");
-        let name = name_split[0] + name_split[1] + name_split[2];
-        for (let u of setList) {
-            if (u.toString().includes(url_obj) && list_of_urls[url_obj].count_f > 10) {
-                browser.notifications.create({
-                    "type": "basic",
-                    "iconUrl": browser.extension.getURL("icons/error.png"),
-                    "title": "Activity Manager Extension",
-                    "message": "You have visited " + url_obj + " page " + list_of_urls[url_obj].count_f + " times"
-                });
+        if (list_of_urls.hasOwnProperty(url_obj)) {
+            for (let u of setList) {
+                if (u.toString().includes(url_obj) && list_of_urls[url_obj].count_f > 10) {
+                    browser.notifications.create({
+                        "type": "basic",
+                        "iconUrl": browser.extension.getURL("icons/error.png"),
+                        "title": "Activity Manager Extension",
+                        "message": "You have visited " + url_obj + " page " + list_of_urls[url_obj].count_f + " times"
+                    });
+                }
             }
+
+            let row = document.createElement("div");
+            $(row).addClass("row");
+
+            let a_tag = document.createElement("a");
+            $(a_tag).text(list_of_urls[url_obj].name);
+            $(a_tag).attr("href", list_of_urls[url_obj].url);
+            let first = createARow(8, "small");
+            $(first).append(a_tag);
+
+
+            let p_tag_2 = document.createElement("p");
+            $(p_tag_2).text(list_of_urls[url_obj].count_f);
+            let second = createARow(4, "small");
+            $(second).append(p_tag_2);
+            let font_type = getFontSizeforDownloads(list_of_urls[url_obj].count_f);
+            if (font_type === 1) {
+                $(second).addClass("medium");
+            }
+            else if (font_type === 2) {
+                $(second).addClass("big");
+            }
+            else {
+                $(second).addClass("small");
+            }
+            $(row).append(first);
+            $(row).append(second);
+            list.append(row);
         }
-
-        let row = document.createElement("div");
-        $(row).addClass("row");
-
-        let a_tag = document.createElement("a");
-        $(a_tag).text(list_of_urls[url_obj].name); $(a_tag).attr("href", list_of_urls[url_obj].url);
-        let first = createARow(8, "small"); $(first).append(a_tag);
-
-
-        let p_tag_2 = document.createElement("p");
-        $(p_tag_2).text(list_of_urls[url_obj].count_f);
-        let second = createARow(4, "small"); $(second).append(p_tag_2);
-        let font_type = getFontSizeforDownloads(list_of_urls[url_obj].count_f);
-        if (font_type === 1) {$(second).addClass("medium");}
-        else if(font_type === 2) {$(second).addClass("big");}
-        else {$(second).addClass("small");}
-        $(row).append(first); $(row).append(second);
-        list.append(row);
     }
 }
 
