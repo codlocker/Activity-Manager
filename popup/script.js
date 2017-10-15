@@ -2,7 +2,7 @@ let searchHistory = browser.history.search({text: ""});
 let list = $("#content");
 let list_of_urls = {};
 let result = browser.storage.local.get('url');
-let setList = new Set();
+let setList = "";
 class UrlContent {
     constructor(url, name, count_f) {
         this.url = url;
@@ -35,15 +35,13 @@ searchHistory.then((results) => {
 function getMostViewedListOfURLs(list_of_urls) {
     for (let url_obj in list_of_urls) {
         if (list_of_urls.hasOwnProperty(url_obj)) {
-            for (let u of setList) {
-                if (u.toString().includes(url_obj) && list_of_urls[url_obj].count_f > 10) {
-                    browser.notifications.create({
-                        "type": "basic",
-                        "iconUrl": browser.extension.getURL("icons/error.png"),
-                        "title": "Activity Manager Extension",
-                        "message": "You have visited " + url_obj + " page " + list_of_urls[url_obj].count_f + " times"
-                    });
-                }
+            if (setList.toString().includes(url_obj) && list_of_urls[url_obj].count_f > 10) {
+                browser.notifications.create({
+                    "type": "basic",
+                    "iconUrl": browser.extension.getURL("icons/warning.png"),
+                    "title": "Activity Manager Extension",
+                    "message": "You have visited " + url_obj + " page " + list_of_urls[url_obj].count_f + " times"
+                });
             }
 
             let row = document.createElement("div");
@@ -89,7 +87,7 @@ function notifyuserRegardingUsage() {
 }
 
 function promisedList(result) {
-    setList = new Set(result.url);
+    setList = result.url;
     getMostViewedListOfURLs(list_of_urls);
 }
 

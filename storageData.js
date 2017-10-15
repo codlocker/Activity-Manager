@@ -17,17 +17,13 @@ function getLink() {
 }
 function saveLinks(error) {
     console.log(`Error: ${error}`);
-    let unique_urls = new Set();
-    unique_urls.add(new_url);
-    browser.storage.local.set({'url': unique_urls});
+    browser.storage.local.set({'url': new_url});
 }
 
 function addMoreLinks(result) {
-    res = new Set(result.url);
-    res.add(new_url);
     browser.storage.local.set(
         {
-            'url': res
+            'url': new_url
         });
 }
 
@@ -37,12 +33,11 @@ function restoreOptions() {
 }
 
 function setData(result) {
-    res = new Set(result.url);
-    if (res.size === 0) {
-        $("#allowed_urls").append("<p>No URLs Added yet!</p>");
-    }
-    for (let u of res) {
-        let url_content = createDivForLink(u);
+    res = result.url;
+    if (res === null) {
+        $("#allowed_urls").append("<p>No URL Added yet!</p>");
+    } else {
+        let url_content = createDivForLink(res);
         $("#allowed_urls").append(url_content);
     }
 }
@@ -71,10 +66,10 @@ function createDivForLink(u) {
     $(button).text("DELETE");
     $(button).on("click", function () {
         console.log("Deleting:" + u);
-        res.delete(u);
+        res = null
         browser.storage.local.set(
             {
-                'url': res
+                'url': null
             });
         $(this).text("DELETED");
         $(this).addClass("disabled").removeClass("alert");
