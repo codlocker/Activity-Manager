@@ -35,7 +35,7 @@ searchHistory.then((results) => {
 function getMostViewedListOfURLs(list_of_urls) {
     for (let url_obj in list_of_urls) {
         if (list_of_urls.hasOwnProperty(url_obj)) {
-            if (setList.toString().includes(url_obj) && list_of_urls[url_obj].count_f > 10) {
+            if (setList !== null && setList.toString().includes(url_obj) && list_of_urls[url_obj].count_f > 10) {
                 browser.notifications.create({
                     "type": "basic",
                     "iconUrl": browser.extension.getURL("icons/warning.png"),
