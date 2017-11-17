@@ -1,7 +1,10 @@
 let searchHistory = browser.history.search({text: ""});
 let list = $("#content");
 let list_of_urls = {};
-let result = browser.storage.local.get('url');
+let to_block_url = undefined;
+if (typeof(browser.storage.local.get("url") !== undefined)) {
+    to_block_url = browser.storage.local.get("url");
+}
 let setList = "";
 class UrlContent {
     constructor(url, name, count_f) {
@@ -83,7 +86,7 @@ function createARow(num, type) {
 }
 
 function notifyuserRegardingUsage() {
-    result.then(promisedList, errorData);
+    to_block_url.then(promisedList, errorData);
 }
 
 function promisedList(result) {
